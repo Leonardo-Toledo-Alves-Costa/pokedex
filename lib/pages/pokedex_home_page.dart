@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokedex_dart/controllers/home_page_controller.dart';
 import 'package:pokedex_dart/models/page_data.dart';
 
-final HomePageControllerProvider = StateNotifierProvider((ref){
+final HomePageControllerProvider = StateNotifierProvider<HomePageController, HomePageData>((ref){
   return HomePageController(HomePageData.initial());
   }
 );
@@ -22,6 +22,7 @@ class _PokedexHomePageState extends ConsumerState<PokedexHomePage> {
   @override
   Widget build(BuildContext context) {
     _homePageController = ref.watch(HomePageControllerProvider.notifier);
+    _homePageData = ref.watch(HomePageControllerProvider);
 
     return Scaffold(
       body: _buildUI(context)
@@ -66,9 +67,15 @@ class _PokedexHomePageState extends ConsumerState<PokedexHomePage> {
           SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.60,
             child: ListView.builder(
-              itemCount: 0,
+              itemCount: _homePageData.data?.results?.length ?? 0,
               itemBuilder: (context, index){
-                return ListTile();
+                return ListTile(title: Text(
+                    index.toString(),
+                    style: TextStyle(
+                      color: Colors.black
+                    ),
+                  ),
+                );
               }
             ),
           )
