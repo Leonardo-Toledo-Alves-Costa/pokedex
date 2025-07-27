@@ -29,7 +29,20 @@ class PokemonListTile extends ConsumerWidget {
   Widget _tile(BuildContext context, bool isLoading, Pokemon? pokemon) {
     return Skeletonizer(
       enabled: isLoading,
-      child: ListTile(title: Text(pokemon != null ? pokemon.name!.toUpperCase() : "Currently loading pokemon's name")),
+      child: ListTile(
+        leading: pokemon != null
+            ? CircleAvatar(
+                backgroundImage: NetworkImage(pokemon.sprites!.frontDefault!),
+              )
+            : CircleAvatar(),
+        title: Text(
+          pokemon != null
+              ? pokemon.name!.toUpperCase()
+              : "Currently loading pokemon's name",
+        ),
+        subtitle: Text('Has ${pokemon?.moves?.length.toString() ?? 0} moves'),
+        trailing: IconButton(onPressed: () {}, icon: Icon(Icons.favorite_border)),
+      ),
     );
   }
 }
