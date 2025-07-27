@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pokedex_dart/pages/pokedex_home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,10 +11,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Olá, mundo!'),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
+        useMaterial3: true,
+        textTheme: GoogleFonts.sairaTextTheme()
       ),
+      title: 'Pokedex',
+      home: PokedexHomePage()
     );
   }
 }
