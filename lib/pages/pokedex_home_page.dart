@@ -1,16 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pokedex_dart/controllers/home_page_controller.dart';
+import 'package:pokedex_dart/models/page_data.dart';
 
-class PokedexHomePage extends StatefulWidget {
+final HomePageControllerProvider = StateNotifierProvider((ref){
+  return HomePageController(HomePageData.initial());
+  }
+);
+
+class PokedexHomePage extends ConsumerStatefulWidget {
   const PokedexHomePage({super.key});
 
   @override
-  State<PokedexHomePage> createState() => _PokedexHomePageState();
+  ConsumerState<PokedexHomePage> createState() => _PokedexHomePageState();
 }
 
-class _PokedexHomePageState extends State<PokedexHomePage> {
+class _PokedexHomePageState extends ConsumerState<PokedexHomePage> {
+  late HomePageController _homePageController;
+  late HomePageData _homePageData;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildUI(context));
+    _homePageController = ref.watch(HomePageControllerProvider.notifier);
+
+    return Scaffold(
+      body: _buildUI(context)
+    );
   }
 
   Widget _buildUI(BuildContext context) {
