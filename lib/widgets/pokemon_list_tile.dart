@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokedex_dart/models/pokemon.dart';
+import 'package:pokedex_dart/pages/pokemon_stats_catch_card.dart';
 import 'package:pokedex_dart/providers/pokemon_data_providers.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -33,30 +34,42 @@ class PokemonListTile extends ConsumerWidget {
   Widget _tile(BuildContext context, bool isLoading, Pokemon? pokemon) {
     return Skeletonizer(
       enabled: isLoading,
-      child: ListTile(
-        leading: pokemon != null
-            ? CircleAvatar(
-                backgroundImage: NetworkImage(pokemon.sprites!.frontDefault!),
-              )
-            : CircleAvatar(),
-        title: Text(
-          pokemon != null
-              ? pokemon.name!.toUpperCase()
-              : "Currently loading pokemon's name",
-        ),
-        subtitle: Text('Has ${pokemon?.moves?.length.toString() ?? 0} moves'),
-        trailing: IconButton(
-          onPressed: () {
-            if (_favoritePokemons.contains(pokemonURL)) {
-              _favoritePokemonsProvider.removeFavoritePokemon(pokemonURL);
-            } else {
-              _favoritePokemonsProvider.addFavoritePokemon(pokemonURL);
-            }
-          },
-          icon: _favoritePokemons.contains(pokemonURL)
-              ? Icon(Icons.favorite)
-              : Icon(Icons.favorite_border),
+      child: GestureDetector(
+        onTap: () {
+          if (!isLoading) {
+            showDialog(
+              context: context,
+              builder: (_) {
+                return PokemonStatsCatchCard(pokemonURL: pokemonURL);
+              },
+            );
+          }
+        },
+        child: ListTile(
+          leading: pokemon != null
+              ? CircleAvatar(
+                  backgroundImage: NetworkImage(pokemon.sprites!.frontDefault!),
+                )
+              : CircleAvatar(),
+          title: Text(
+            pokemon != null
+                ? pokemon.name!.toUpperCase()
+                : "Currently loading pokemon's name",
+          ),
+          subtitle: Text('Has ${pokemon?.moves?.length.toString() ?? 0} moves'),
+          trailing: IconButton(
+            onPressed: () {
+              if (_favoritePokemons.contains(pokemonURL)) {
+                _favoritePokemonsProvider.removeFavoritePokemon(pokemonURL);
+              } else {
+                _favoritePokemonsProvider.addFavoritePokemon(pokemonURL);
+              }
+            },
+            icon: _favoritePokemons.contains(pokemonURL)
+                ? Icon(Icons.favorite)
+                : Icon(Icons.favorite_border),
             color: Colors.red,
+          ),
         ),
       ),
     );
