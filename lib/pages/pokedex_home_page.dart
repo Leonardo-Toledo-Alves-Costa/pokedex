@@ -1,10 +1,10 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokedex_dart/controllers/home_page_controller.dart';
 import 'package:pokedex_dart/models/page_data.dart';
 import 'package:pokedex_dart/models/pokemon.dart';
+import 'package:pokedex_dart/pages/captured_pokemons_page.dart';
 import 'package:pokedex_dart/pages/pokemon_catch_page.dart';
 import 'package:pokedex_dart/providers/pokemon_data_providers.dart';
 import 'package:pokedex_dart/widgets/pokemon_card.dart';
@@ -92,7 +92,7 @@ class _PokedexHomePageState extends ConsumerState<PokedexHomePage> {
               const Text('Favorites', style: TextStyle(fontSize: 25)),
               IconButton(
                 icon: const Icon(Icons.catching_pokemon, color: Colors.red),
-                tooltip: 'Capturar Pokémon Aleatório',
+                tooltip: 'Catch a Random Pokemon!',
                 onPressed: () {
                   if (_favoritePokemons.isNotEmpty) {
                     final randomIndex = Random().nextInt(
@@ -105,15 +105,14 @@ class _PokedexHomePageState extends ConsumerState<PokedexHomePage> {
                       MaterialPageRoute(
                         builder: (context) => PokemonCatchPage.fromPokemonUrl(
                           pokemonUrl: randomPokemonURL,
-                          userId:
-                              'bb1fb742-d353-4644-ab3a-10b61f1f5579',
+                          userId: 'bb1fb742-d353-4644-ab3a-10b61f1f5579',
                         ),
                       ),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Nenhum Pokémon favorito para capturar.'),
+                        content: Text('No favorite pokemons to capture yet.'),
                       ),
                     );
                   }
@@ -161,7 +160,23 @@ class _PokedexHomePageState extends ConsumerState<PokedexHomePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('All pokemons', style: TextStyle(fontSize: 25)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('All pokemons', style: TextStyle(fontSize: 25)),
+              IconButton(
+                icon: const Icon(Icons.inventory_2_outlined, color: Colors.red),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => CapturedPokemonsPage(userId: 'bb1fb742-d353-4644-ab3a-10b61f1f5579',),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
           SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.60,
             child: ListView.builder(
