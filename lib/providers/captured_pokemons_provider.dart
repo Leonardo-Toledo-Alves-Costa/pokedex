@@ -1,21 +1,38 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokedex_dart/services/database_service.dart';
+import 'package:pokedex_dart/services/api_service.dart';
 
 final capturedPokemonsProvider =
     StateNotifierProvider<CapturedPokemonsNotifier, List<String>>((ref) {
-  return CapturedPokemonsNotifier();
+  return CapturedPokemonsNotifier(userId: 'bb1fb742-d353-4644-ab3a-10b61f1f5579'); 
 });
 
 class CapturedPokemonsNotifier extends StateNotifier<List<String>> {
-  final _db = DatabaseService();
+  final DatabaseService _db = DatabaseService();
+  final String userId;
 
-  CapturedPokemonsNotifier() : super([]) {
+  CapturedPokemonsNotifier({required this.userId}) : super([]) {
     _loadCaptured();
   }
 
   Future<void> _loadCaptured() async {
-    final list = await _db.getList('captured') ?? [];
-    state = list;
+    try {
+      final remoteData = await ApiService.getCapturedPokemons(userId);
+
+      final urls = remoteData.map((item) {
+        final id = item['id'];
+        return 'https://pokeapi.co/api/v2/pokemon/$id/';
+      }).toList();
+
+      await _db.saveList('captured', urls);
+
+      state = urls;
+    } catch (e) {
+      Text('Erro ao carregar capturados da API: $e');
+      final local = await _db.getList('captured') ?? [];
+      state = local;
+    }
   }
 
   Future<void> addCapturedPokemon(String pokemonUrl) async {

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pokedex_dart/providers/captured_pokemons_provider.dart';
 import 'package:pokedex_dart/providers/pokemon_data_providers.dart';
 import 'package:pokedex_dart/services/api_service.dart';
 import 'package:pokedex_dart/services/database_service.dart';
@@ -82,6 +83,7 @@ class _CapturePokemonPageState extends ConsumerState<PokemonCatchPage> {
                               await Future.delayed(const Duration(seconds: 1));
                               if (mounted) Navigator.pop(context);
                               ref.read(favoritePokemonsProvider.notifier).removeFavoritePokemon(widget.pokemonUrl);
+                              ref.read(capturedPokemonsProvider.notifier).addCapturedPokemon(widget.pokemonUrl);
                             } else {
                               setState(() {
                                 remainingBalls--;
