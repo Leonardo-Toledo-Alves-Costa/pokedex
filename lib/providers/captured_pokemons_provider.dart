@@ -29,7 +29,7 @@ class CapturedPokemonsNotifier extends StateNotifier<List<String>> {
 
       state = urls;
     } catch (e) {
-      Text('Erro ao carregar capturados da API: $e');
+      Text('Error to load captured pokemons from API: $e');
       final local = await _db.getList('captured') ?? [];
       state = local;
     }

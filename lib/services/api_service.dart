@@ -55,7 +55,7 @@ class ApiService {
     String pokemonId,
   ) async {
     final url = Uri.parse(
-      'https://pokedex-api-i5r9.onrender.com/api/v1/pokedex/$userId/$pokemonId',
+      'https://pokedex-api-i5r9.onrender.com/api/v1/poke/$userId/$pokemonId',
     );
 
     final response = await http.delete(url);
