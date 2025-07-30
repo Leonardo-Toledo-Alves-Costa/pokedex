@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = 'https://pokedex-api-i5r9.onrender.com/api/v1';
+  static const String baseUrl = 'https://pokedex-api-lmk9.onrender.com/api/v1';
 
   static Future<void> capturePokemon({
     required String userId,
@@ -11,7 +11,7 @@ class ApiService {
     required String pokemonName,
   }) async {
     final url = Uri.parse(
-      'https://pokedex-api-i5r9.onrender.com/api/v1/poke/$userId',
+      'https://pokedex-api-lmk9.onrender.com/api/v1/poke/$userId',
     );
 
     final response = await http.post(
@@ -37,7 +37,7 @@ class ApiService {
     String userId,
   ) async {
     final url = Uri.parse(
-      'https://pokedex-api-i5r9.onrender.com/api/v1/pokedex/$userId',
+      'https://pokedex-api-lmk9.onrender.com/api/v1/pokedex/$userId',
     );
 
     final response = await http.get(url);
@@ -55,7 +55,7 @@ class ApiService {
     String pokemonId,
   ) async {
     final url = Uri.parse(
-      'https://pokedex-api-i5r9.onrender.com/api/v1/poke/$userId/$pokemonId',
+      'https://pokedex-api-lmk9.onrender.com/api/v1/poke/$userId/$pokemonId',
     );
 
     final response = await http.delete(url);
